@@ -1,0 +1,38 @@
+---
+- name: "Run playbook"
+  hosts: webservers
+  vars:
+    firewall: firewalld
+  
+  tasks:
+    - name: "Include variables"
+      include_vars: vars/main.yml
+
+    - name: "Include tasks"
+      include: tasks/main.yml
+
+    - name: "Install firewall"
+      yum:
+        name: "{{ firewall }}"
+        state: latest
+
+    - name: "Start firewall"
+      service:
+        name: "{{ firewall }}"
+        state: started
+        enabled: true
+
+    - name: "Open tcp port"
+      firewalld:
+        service: http
+        immediate: true
+        permanent: true
+        state: enabled
+
+
+    - name: "Copy index.html"
+      copy:
+        content: "This server is managed by ansible {{ ansible_fqdn }} ({{ansible_default_ipv4.address}}) \n"
+        dest: "{{ web_root }}/index.html"
+
+

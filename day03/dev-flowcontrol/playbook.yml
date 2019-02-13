@@ -1,0 +1,39 @@
+---
+- hosts: all
+  vars:
+    db_package: mariadb-server
+    db_service: mariadb
+    db_users:
+      - db_admin
+      - db_user
+    configure_database_path: /etc/my.cnf
+
+
+  tasks:
+    - name: Create the MariaDB users
+      user:
+        name: "{{ item }}"
+      with_items: "{{ db_users }}"
+      #db_users 변수를 통해 반복    
+
+      when: inventory_hostname in groups['databases']
+      #매직변수 inventory_hostname, groups
+      #인벤토리에 정의된 호스트가 database 그룹에 속할 때 자업 실행
+
+    - name: Install the database server
+      yum:
+        name: "{{ db_package }}"
+      when: db_package is defined
+      #db_package 변수가 존재할 때 작업 실행
+
+    - name: Configure the dataase software
+      include: configure_database.yml
+      vars:
+        #configure_database.yml에서 필요로하는 extra_packages 값 주입
+        extra_packages:
+          - mariadb-bench
+          - mariadb-libs
+          - mariadb-test
+      when: configure_database_path is defined
+      #configure_database_path 변수가 존재할 때 실행
+

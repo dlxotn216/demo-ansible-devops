@@ -1,0 +1,14 @@
+serverc
+serverd
+
+[testgroup]
+serverc
+
+[Group]
+servera
+serverb
+
+[Group2:children]
+Group
+testgroup
+

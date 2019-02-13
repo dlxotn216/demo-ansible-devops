@@ -1,0 +1,52 @@
+---
+- name: "Check httpd package installed"
+  shell:
+    rpm -q httpd
+  register: result
+  failed_when: result.rc == 1
+
+- block:
+    - name: "Copy httpd conf.d file"    
+      get_url:
+        url: "{{ https_uri  }}"
+        dest: /etc/httpd/conf.d/
+      
+    - name: "Create SSL Directory"
+      file:
+        path: /etc/httpd/conf.d/ssl
+        state: directory
+        recurse: true
+        mode: 0755
+
+    - name: "Create Log Directory"
+      file:
+        path: /var/www/html/logs
+        state: directory
+        recurse: true
+        mode: 0755
+      
+    - name: "Check origin ssl conf file"
+      stat:
+        path: /etc/httpd/conf.d/ssl.conf
+      register: ssl_conf_result
+
+    - name: backup origin ssl conf file
+      shell:
+        mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.bak
+      when: ssl_conf_result.stat.exists
+
+    - name: ...
+      unarchive:
+        src: "{{ ssl_uri }}"
+        dest: /etc/httpd/conf.d/ssl/
+        copy: no
+      notify:
+        - restart_services
+
+    - name: Create index.html file
+      copy:
+        content: "{{ ansible_fqdn }} ({{ ansible_default_ipv4.address}}) has benn customized by Ansible\n"
+        dest: /var/www/html/index.html    
+  when: 
+    result.rc == 0
+

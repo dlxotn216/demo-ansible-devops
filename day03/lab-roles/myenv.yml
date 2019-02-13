@@ -1,0 +1,6 @@
+---
+- name: setup my personal environment
+  hosts: all
+  roles:
+    - role: student.myenv
+      myenv_user: student

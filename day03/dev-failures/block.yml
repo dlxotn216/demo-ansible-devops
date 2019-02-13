@@ -1,0 +1,44 @@
+---
+- name: "Block palybook"
+  hosts: databases
+  vars:
+    db_package: mariadb-server
+    web_package: httpd
+    db_service: mariadb
+
+  tasks:
+    - name: Check local time
+      command: date             
+      register: command_result
+      changed_when: false
+      #command module이 데이터를 수집하는 명령과 변경하는 명령의 차이를
+      #잘 구분하지 못하여 변경이 없으나 changed가 발생함
+      #changed_when 옵션을 통해 변경점을 false로 보고하도록 설정
+
+    - name: Print local time
+      debug:
+        var: command_result["stdout"]
+
+    - block:
+        - name: Install {{ web_package }} package
+          yum:
+            name: "{{ web_package }}"
+            state: latest
+          #failed_when: web_package is defined and web_package == "httpd"
+          #특정 조건에 부합할 때 TASK를 실패하도록 처리할 수 있음        
+  
+      rescue:
+        - name: Install {{ db_package }} package
+          yum:
+            name: "{{ db_package }}"
+            state: latest
+
+      always:
+        - name: Start {{ db_service }} service
+          service:
+            name: "{{ db_service }}"
+            state: started
+            enabled: true
+
+
+      

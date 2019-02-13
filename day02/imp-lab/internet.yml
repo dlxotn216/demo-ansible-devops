@@ -1,0 +1,54 @@
+---
+- name: "Enable internet services"
+  hosts: serverb.lab.example.com 
+  become: yes
+  tasks: 
+    - name: "Check latest firewalld, httpd, php, php-mysql, mariadb-server version"
+      yum:
+        name: 
+          - firewalld
+          - httpd
+          - php
+          - php-mysql
+          - mariadb-server
+        state: latest
+
+    - name: "Check firewalld service enabled and started"
+      service:
+        name: firewalld
+        enabled: true
+        state: started
+    
+    - name: "Check fiewalld permits http service"
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: yes
+
+    - name: "Check httpd enabled and running"
+      service:
+        name: httpd
+        enabled: true
+        state: started
+
+    - name: "Check mariadb enabled and running"
+      service:
+        name: mariadb
+        enabled: true
+        state: started
+
+    - name: "Check index.php completely installed"
+      get_url:
+        url: http://materials.example.com/grading/var/www/html/index.php
+        dest: /var/www/html/index.php
+
+- name: "Verifiacation 'Enable internet services play'"
+  hosts: serverb.lab.example.com
+  become: no
+  tasks:
+    - name: "Check Http status code is 200"
+      uri:
+        url: http://serverb.lab.example.com
+        status_code: 200
+

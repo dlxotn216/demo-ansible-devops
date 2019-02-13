@@ -1,0 +1,50 @@
+---
+- name: Enable intranet services                                #첫번째 Play 정의
+  hosts: servera.lab.example.com                                #대상 호스트
+  become: true                                                  #Privilege escalation 설정(yum 모듈을 위한)
+  tasks:                            
+    - name: lastest version of httpd and firewalld installed    #최신 버전의 httpd, firewalld 패키지 확인 및 설치
+      yum: 
+        name: 
+          - httpd
+          - firewalld
+        state: latest
+
+    - name: firewalld enabled and running                       #firewalld가 실행되고 있는지, 부팅 시 시작되는지 확인
+      service:
+        name: firewalld
+        enabled: true
+        state: started
+
+    - name: firewalld permits http service                      #firewalld가 http 서비스에 대한 연결 허용하는지 확인
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: yes
+
+    - name: httpd enabled and running                           #httpd가 실행되고 있는지, 부팅 시 시작되는지 확인
+      service: 
+        name: httpd
+        enabled: true
+        state: started
+
+    - name: test html page is installed                         #올바른 콘텐츠가 있는 지 확인
+      copy:
+        content: "Welcome to the example.com intranet!\n"
+        dest: /var/www/html/index.html
+
+- name: Test intranet web server                                #웹 서버 테스트를 위한 localhost를 대상으로 하는 Play 정의
+  hosts: localhost
+  become: no
+  tasks:
+    - name: connect to intranet web server
+      uri:                                                      #uri 모듈을 통해 url에 접속 및 status가 {status_code}와 동일한지 확인
+        url: http://servera.lab.example.com
+        status_code: 200
+
+
+
+
+        
+      

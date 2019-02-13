@@ -1,0 +1,13 @@
+#tab을 space로 설정필요
+#$HOME/.vimrc -> autocmd FileType yaml setlocal ai ts=2 sw=2 et paste 설정
+---
+- name: Configure important user consistently     #description
+  hosts: servera.lab.example.com
+  remote_user: devops
+  become: true
+  tasks:
+    - name: Create user     #description
+      yum:                  #module name
+        name: httpd         #argument
+        state: present      #argument
+

@@ -1,0 +1,35 @@
+---
+- name: Install and start Firewall and Start Web service and DB service
+  hosts: lamp
+  vars:
+    firewall: firewalld
+
+  tasks:
+    - name: Include variables file
+      include_vars: vars/main.yml
+
+    - name: Include tasks file
+      include: tasks/main.yml
+
+    - name: Install firewall
+      yum:
+        name: "{{ firewall }}"
+        state: latest
+
+    - name: Start firewall
+      service:
+        name: "{{ firewall }}"
+        state: started
+        enabled: true
+
+    - name: Open the port for the web server
+      firewalld:
+        service: http
+        state: enabled
+        immediate: true
+        permanent: true
+
+    - name: Create index.html
+      copy:
+        content: "{{ ansible_fqdn }} ({{ ansible_default_ipv4.address }}) has benn customized by Ansible\n"
+        dest: "{{ web_root }}/index.html"

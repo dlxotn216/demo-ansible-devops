@@ -1,0 +1,18 @@
+---
+- name: "Install packages"
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "{{ web_package }}"
+    - "{{ ssl_package }}"
+  when: (memory) < (ansible_memory_mb.real.total)
+
+- name: "Start Web service"
+  service:
+    name: "{{ web_service }}"
+    state: started
+    enabled: true
+
+
+  
