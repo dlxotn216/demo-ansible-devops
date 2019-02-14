@@ -1,0 +1,79 @@
+---
+- name: Upgrade Webservers
+  hosts: webservers
+  remote_user: devops
+  become: yes
+  serial: 1       # rolling update serial
+
+  tasks:
+    # LB pool에서 웹서버를 제거
+    # 이름이 app이고 socket 경로가 /va/lib/haproxy/stats인
+    # 백엔드 풀에서 백엔드 서버를 비활성화
+    - name: disable the server in haproxy
+      haproxy:
+        state: disabled
+        backend: app
+        host: "{{ inventory_hostname }}"      # webservers host 그룹 명시
+        socket: /var/lib/haproxy/stats
+        wait: yes
+      delegate_to: "{{ item }}"             # 웹서버 작업은 lbserver group의 호스트에게 위임
+      with_items: "{{ groups.lbserver }}"
+    
+    # 페이지 업데이트
+    - name: upgrade the page
+      template:
+        src: templates/index-ver1.html.j2
+        dest: /var/www/html/index.html
+      register: pageupgrade
+
+    # 비동기로 웹서버 머신 재시작
+    - name: restart machine
+      command: shutdown -r +1 "Ansible updates triggered"
+      async: 1
+      poll: 0
+      ignore_errors: true
+      when: pageupgrade.changed
+    
+    # 웹 서버 머신이 시작될 때 까지 대기
+    # wait_for 모듈을 통해 restart machine 작업 대기
+    - name: wait for webserver to restart
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        state: started
+        delay: 80
+        timeout: 200
+      become: False
+      delegate_to: 127.0.0.1        # localhost에게 작업 위임
+      when: pageupgrade.changed
+
+    # 서버 포트가 시작될 때 까지 대기
+    # wait_for 모듈을 통해 restart machine 작업 대기
+    - name: wait for webserver to come up
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 80
+        state: started
+        timeout: 20
+
+    - name: enable the server in haproxy
+      haproxy:
+        state: enabled
+        backend: app
+        host: "{{ inventory_hostname }}"
+        socket: /var/lib/haproxy/stats
+        wait: yes
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups.lbserver }}"
+
+
+
+
+
+
+
+
+
+
+
+

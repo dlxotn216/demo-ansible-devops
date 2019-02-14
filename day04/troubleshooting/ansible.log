@@ -1,0 +1,238 @@
+2019-02-14 14:41:35,429 p=11354 u=student |  ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/home/student/troubleshooting/samba.yml': line 8, column 30, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+    install_state: installed
+    random_var: This is colon: test
+                             ^ here
+
+2019-02-14 14:42:07,657 p=11383 u=student |  ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/home/student/troubleshooting/samba.yml': line 8, column 30, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+    install_state: installed
+    random_var: This is colon: test
+                             ^ here
+
+2019-02-14 14:42:09,261 p=11389 u=student |  ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/home/student/troubleshooting/samba.yml': line 8, column 30, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+    install_state: installed
+    random_var: This is colon: test
+                             ^ here
+
+2019-02-14 14:42:10,506 p=11395 u=student |  ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/home/student/troubleshooting/samba.yml': line 8, column 30, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+    install_state: installed
+    random_var: This is colon: test
+                             ^ here
+
+2019-02-14 14:42:11,144 p=11401 u=student |  ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/home/student/troubleshooting/samba.yml': line 8, column 30, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+    install_state: installed
+    random_var: This is colon: test
+                             ^ here
+
+2019-02-14 14:46:33,988 p=11475 u=student |  ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/home/student/troubleshooting/samba.yml': line 43, column 4, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+   - name: deliver samba config
+   ^ here
+
+2019-02-14 14:47:26,744 p=11511 u=student |  ERROR! failed at splitting arguments, either an unbalanced jinja2 block or quotes: msg="The state for the samba service is {{ install_state }}
+
+The error appears to have been in '/home/student/troubleshooting/samba.yml': line 21, column 5, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+  - name: debug install_state variable
+    ^ here
+
+2019-02-14 14:48:06,947 p=11528 u=student |  PLAY [Install a samba server] *********************************************************************************
+2019-02-14 14:48:06,971 p=11528 u=student |  TASK [Gathering Facts] ****************************************************************************************
+2019-02-14 14:48:17,115 p=11528 u=student |  fatal: [servera.lab.exammple.com]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: Could not resolve hostname servera.lab.exammple.com: Name or service not known\r\n", "unreachable": true}
+2019-02-14 14:48:17,116 p=11528 u=student |  	to retry, use: --limit @/home/student/troubleshooting/samba.retry
+
+2019-02-14 14:48:17,116 p=11528 u=student |  PLAY RECAP ****************************************************************************************************
+2019-02-14 14:48:17,116 p=11528 u=student |  servera.lab.exammple.com   : ok=0    changed=0    unreachable=1    failed=0   
+2019-02-14 14:49:49,356 p=11595 u=student |  PLAY [Install a samba server] *********************************************************************************
+2019-02-14 14:49:49,381 p=11595 u=student |  TASK [Gathering Facts] ****************************************************************************************
+2019-02-14 14:49:49,919 p=11595 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:49:49,921 p=11595 u=student |  TASK [install samba] ******************************************************************************************
+2019-02-14 14:49:52,043 p=11595 u=student |  changed: [servera.lab.example.com]
+2019-02-14 14:49:52,045 p=11595 u=student |  TASK [install firewalld] **************************************************************************************
+2019-02-14 14:49:52,298 p=11595 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:49:52,300 p=11595 u=student |  TASK [debug install_state variable] ***************************************************************************
+2019-02-14 14:49:52,308 p=11595 u=student |  ok: [servera.lab.example.com] => {
+    "msg": "The state for the samba service is installed"
+}
+2019-02-14 14:49:52,310 p=11595 u=student |  TASK [start samba] ********************************************************************************************
+2019-02-14 14:49:52,660 p=11595 u=student |  changed: [servera.lab.example.com]
+2019-02-14 14:49:52,661 p=11595 u=student |  TASK [start firewalld] ****************************************************************************************
+2019-02-14 14:49:52,823 p=11595 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:49:52,825 p=11595 u=student |  TASK [configure firewall for samba] ***************************************************************************
+2019-02-14 14:49:53,228 p=11595 u=student |  changed: [servera.lab.example.com]
+2019-02-14 14:49:53,230 p=11595 u=student |  TASK [deliver samba config] ***********************************************************************************
+2019-02-14 14:49:53,239 p=11595 u=student |  fatal: [servera.lab.example.com]: FAILED! => {"changed": false, "failed": true, "msg": "Unable to find 'samba.j2' in expected paths."}
+2019-02-14 14:49:53,239 p=11595 u=student |  	to retry, use: --limit @/home/student/troubleshooting/samba.retry
+
+2019-02-14 14:49:53,240 p=11595 u=student |  PLAY RECAP ****************************************************************************************************
+2019-02-14 14:49:53,240 p=11595 u=student |  servera.lab.example.com    : ok=7    changed=3    unreachable=0    failed=1   
+2019-02-14 14:50:46,811 p=11709 u=student |  PLAY [Install a samba server] *********************************************************************************
+2019-02-14 14:50:46,835 p=11709 u=student |  TASK [Gathering Facts] ****************************************************************************************
+2019-02-14 14:50:47,199 p=11709 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:50:47,201 p=11709 u=student |  TASK [install samba] ******************************************************************************************
+2019-02-14 14:50:47,539 p=11709 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:50:47,541 p=11709 u=student |  TASK [install firewalld] **************************************************************************************
+2019-02-14 14:50:47,785 p=11709 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:50:47,788 p=11709 u=student |  TASK [debug install_state variable] ***************************************************************************
+2019-02-14 14:50:47,796 p=11709 u=student |  ok: [servera.lab.example.com] => {
+    "msg": "The state for the samba service is installed"
+}
+2019-02-14 14:50:47,798 p=11709 u=student |  TASK [start samba] ********************************************************************************************
+2019-02-14 14:50:48,020 p=11709 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:50:48,022 p=11709 u=student |  TASK [start firewalld] ****************************************************************************************
+2019-02-14 14:50:48,181 p=11709 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:50:48,183 p=11709 u=student |  TASK [configure firewall for samba] ***************************************************************************
+2019-02-14 14:50:48,548 p=11709 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:50:48,550 p=11709 u=student |  TASK [deliver samba config] ***********************************************************************************
+2019-02-14 14:50:49,116 p=11709 u=student |  changed: [servera.lab.example.com]
+2019-02-14 14:50:49,117 p=11709 u=student |  PLAY RECAP ****************************************************************************************************
+2019-02-14 14:50:49,117 p=11709 u=student |  servera.lab.example.com    : ok=8    changed=1    unreachable=0    failed=0   
+2019-02-14 14:50:57,872 p=11791 u=student |  PLAY [Install a samba server] *********************************************************************************
+2019-02-14 14:51:01,468 p=11791 u=student |  Perform task: TASK: Gathering Facts (N)o/(y)es/(c)ontinue: ****************************************************
+2019-02-14 14:51:01,469 p=11791 u=student |  TASK [Gathering Facts] ****************************************************************************************
+2019-02-14 14:51:01,814 p=11791 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:51:03,540 p=11791 u=student |  Perform task: TASK: install samba (N)o/(y)es/(c)ontinue: ******************************************************
+2019-02-14 14:51:03,542 p=11791 u=student |  TASK [install samba] ******************************************************************************************
+2019-02-14 14:51:03,878 p=11791 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:51:04,468 p=11791 u=student |  Perform task: TASK: install firewalld (N)o/(y)es/(c)ontinue: **************************************************
+2019-02-14 14:51:04,470 p=11791 u=student |  TASK [install firewalld] **************************************************************************************
+2019-02-14 14:51:04,721 p=11791 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:51:05,341 p=11791 u=student |  Perform task: TASK: debug install_state variable (N)o/(y)es/(c)ontinue: ***************************************
+2019-02-14 14:51:05,343 p=11791 u=student |  TASK [debug install_state variable] ***************************************************************************
+2019-02-14 14:51:05,354 p=11791 u=student |  ok: [servera.lab.example.com] => {
+    "msg": "The state for the samba service is installed"
+}
+2019-02-14 14:51:06,983 p=11791 u=student |  Perform task: TASK: start samba (N)o/(y)es/(c)ontinue: ********************************************************
+2019-02-14 14:51:06,985 p=11791 u=student |  TASK [start samba] ********************************************************************************************
+2019-02-14 14:51:07,204 p=11791 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:51:07,934 p=11791 u=student |  Perform task: TASK: start firewalld (N)o/(y)es/(c)ontinue: ****************************************************
+2019-02-14 14:51:07,936 p=11791 u=student |  TASK [start firewalld] ****************************************************************************************
+2019-02-14 14:51:08,091 p=11791 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:51:08,747 p=11791 u=student |  Perform task: TASK: configure firewall for samba (N)o/(y)es/(c)ontinue: ***************************************
+2019-02-14 14:51:08,749 p=11791 u=student |  TASK [configure firewall for samba] ***************************************************************************
+2019-02-14 14:51:09,116 p=11791 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:51:10,205 p=11791 u=student |  Perform task: TASK: deliver samba config (N)o/(y)es/(c)ontinue: ***********************************************
+2019-02-14 14:51:10,207 p=11791 u=student |  TASK [deliver samba config] ***********************************************************************************
+2019-02-14 14:51:10,746 p=11791 u=student |  ok: [servera.lab.example.com]
+2019-02-14 14:51:10,747 p=11791 u=student |  PLAY RECAP ****************************************************************************************************
+2019-02-14 14:51:10,747 p=11791 u=student |  servera.lab.example.com    : ok=8    changed=0    unreachable=0    failed=0   
+2019-02-14 15:02:32,953 p=12106 u=student |  PLAY [create mail relay servers] *****************************************************************************
+2019-02-14 15:02:32,977 p=12106 u=student |  TASK [Gathering Facts] ***************************************************************************************
+2019-02-14 15:02:33,501 p=12106 u=student |  ok: [servera.lab.example.com]
+2019-02-14 15:02:33,503 p=12106 u=student |  TASK [install postfix package] *******************************************************************************
+2019-02-14 15:02:33,881 p=12106 u=student |  changed: [servera.lab.example.com]
+2019-02-14 15:02:33,883 p=12106 u=student |  TASK [install mail config files] *****************************************************************************
+2019-02-14 15:02:34,251 p=12106 u=student |  changed: [servera.lab.example.com]
+2019-02-14 15:02:34,252 p=12106 u=student |  TASK [check main.cf file] ************************************************************************************
+2019-02-14 15:02:34,399 p=12106 u=student |  ok: [servera.lab.example.com]
+2019-02-14 15:02:34,401 p=12106 u=student |  TASK [verify main.cf file exists] ****************************************************************************
+2019-02-14 15:02:34,411 p=12106 u=student |  ok: [servera.lab.example.com] => {
+    "msg": "The main.cf file exists"
+}
+2019-02-14 15:02:34,413 p=12106 u=student |  TASK [start and enable mail services] ************************************************************************
+2019-02-14 15:02:34,635 p=12106 u=student |  changed: [servera.lab.example.com]
+2019-02-14 15:02:34,637 p=12106 u=student |  TASK [check for always_bcc] **********************************************************************************
+2019-02-14 15:02:34,844 p=12106 u=student |  skipping: [servera.lab.example.com]
+2019-02-14 15:02:34,846 p=12106 u=student |  TASK [email notification of always_bcc config] ***************************************************************
+2019-02-14 15:02:34,854 p=12106 u=student |  fatal: [servera.lab.example.com]: FAILED! => {"failed": true, "msg": "The conditional check 'bcc_state.stdout != 'always_bcc ='' failed. The error was: error while evaluating conditional (bcc_state.stdout != 'always_bcc ='): 'dict object' has no attribute 'stdout'\n\nThe error appears to have been in '/home/student/troubleshooting/mailrelay.yml': line 42, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n    - name: email notification of always_bcc config\n      ^ here\n"}
+2019-02-14 15:02:34,854 p=12106 u=student |  RUNNING HANDLER [restart postfix] ****************************************************************************
+2019-02-14 15:02:34,855 p=12106 u=student |  	to retry, use: --limit @/home/student/troubleshooting/mailrelay.retry
+
+2019-02-14 15:02:34,855 p=12106 u=student |  PLAY RECAP ***************************************************************************************************
+2019-02-14 15:02:34,855 p=12106 u=student |  servera.lab.example.com    : ok=6    changed=3    unreachable=0    failed=1   
+2019-02-14 15:04:26,964 p=12214 u=student |  PLAY [create mail relay servers] **********************************************************************************************************************************************************************************
+2019-02-14 15:04:26,988 p=12214 u=student |  TASK [Gathering Facts] ********************************************************************************************************************************************************************************************
+2019-02-14 15:04:27,516 p=12214 u=student |  ok: [servera.lab.example.com]
+2019-02-14 15:04:27,518 p=12214 u=student |  TASK [install postfix package] ************************************************************************************************************************************************************************************
+2019-02-14 15:04:29,061 p=12214 u=student |  changed: [servera.lab.example.com]
+2019-02-14 15:04:29,063 p=12214 u=student |  TASK [install mail config files] **********************************************************************************************************************************************************************************
+2019-02-14 15:04:29,662 p=12214 u=student |  changed: [servera.lab.example.com]
+2019-02-14 15:04:29,663 p=12214 u=student |  TASK [check main.cf file] *****************************************************************************************************************************************************************************************
+2019-02-14 15:04:29,829 p=12214 u=student |  ok: [servera.lab.example.com]
+2019-02-14 15:04:29,831 p=12214 u=student |  TASK [verify main.cf file exists] *********************************************************************************************************************************************************************************
+2019-02-14 15:04:29,842 p=12214 u=student |  ok: [servera.lab.example.com] => {
+    "msg": "The main.cf file exists"
+}
+2019-02-14 15:04:29,843 p=12214 u=student |  TASK [start and enable mail services] *****************************************************************************************************************************************************************************
+2019-02-14 15:04:31,756 p=12214 u=student |  changed: [servera.lab.example.com]
+2019-02-14 15:04:31,758 p=12214 u=student |  TASK [check for always_bcc] ***************************************************************************************************************************************************************************************
+2019-02-14 15:04:31,982 p=12214 u=student |  changed: [servera.lab.example.com]
+2019-02-14 15:04:31,984 p=12214 u=student |  TASK [email notification of always_bcc config] ********************************************************************************************************************************************************************
+2019-02-14 15:04:31,991 p=12214 u=student |  skipping: [servera.lab.example.com]
+2019-02-14 15:04:31,991 p=12214 u=student |  RUNNING HANDLER [restart postfix] *********************************************************************************************************************************************************************************
+2019-02-14 15:04:32,331 p=12214 u=student |  changed: [servera.lab.example.com]
+2019-02-14 15:04:32,332 p=12214 u=student |  PLAY RECAP ********************************************************************************************************************************************************************************************************
+2019-02-14 15:04:32,332 p=12214 u=student |  servera.lab.example.com    : ok=8    changed=5    unreachable=0    failed=0   
+2019-02-14 15:05:34,467 p=12327 u=student |  PLAY [create mail relay servers] **********************************************************************************************************************************************************************************
+2019-02-14 15:05:34,492 p=12327 u=student |  TASK [Gathering Facts] ********************************************************************************************************************************************************************************************
+2019-02-14 15:05:35,033 p=12327 u=student |  ok: [servera.lab.example.com]
+2019-02-14 15:05:35,035 p=12327 u=student |  TASK [install postfix package] ************************************************************************************************************************************************************************************
+2019-02-14 15:05:35,370 p=12327 u=student |  ok: [servera.lab.example.com]
+2019-02-14 15:05:35,372 p=12327 u=student |  TASK [install mail config files] **********************************************************************************************************************************************************************************
+2019-02-14 15:05:35,931 p=12327 u=student |  ok: [servera.lab.example.com]
+2019-02-14 15:05:35,933 p=12327 u=student |  TASK [check main.cf file] *****************************************************************************************************************************************************************************************
+2019-02-14 15:05:36,100 p=12327 u=student |  ok: [servera.lab.example.com]
+2019-02-14 15:05:36,102 p=12327 u=student |  TASK [verify main.cf file exists] *********************************************************************************************************************************************************************************
+2019-02-14 15:05:36,112 p=12327 u=student |  ok: [servera.lab.example.com] => {
+    "msg": "The main.cf file exists"
+}
+2019-02-14 15:05:36,114 p=12327 u=student |  TASK [start and enable mail services] *****************************************************************************************************************************************************************************
+2019-02-14 15:05:36,339 p=12327 u=student |  ok: [servera.lab.example.com]
+2019-02-14 15:05:36,341 p=12327 u=student |  TASK [check for always_bcc] ***************************************************************************************************************************************************************************************
+2019-02-14 15:05:36,558 p=12327 u=student |  changed: [servera.lab.example.com]
+2019-02-14 15:05:36,560 p=12327 u=student |  TASK [email notification of always_bcc config] ********************************************************************************************************************************************************************
+2019-02-14 15:05:36,567 p=12327 u=student |  skipping: [servera.lab.example.com]
+2019-02-14 15:05:36,569 p=12327 u=student |  TASK [postfix filewalld config] ***********************************************************************************************************************************************************************************
+2019-02-14 15:05:36,956 p=12327 u=student |  changed: [servera.lab.example.com]
+2019-02-14 15:05:36,956 p=12327 u=student |  PLAY RECAP ********************************************************************************************************************************************************************************************************
+2019-02-14 15:05:36,957 p=12327 u=student |  servera.lab.example.com    : ok=8    changed=2    unreachable=0    failed=0   
+2019-02-14 15:06:01,880 p=12419 u=student |   [WARNING]: No hosts matched, nothing to do
+
+2019-02-14 15:06:10,679 p=12428 u=student |  servera.lab.example.com | SUCCESS | rc=0 >>
+dhcpv6-client ssh samba smtp
+

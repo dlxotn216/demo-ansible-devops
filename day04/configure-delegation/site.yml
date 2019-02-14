@@ -1,0 +1,84 @@
+---
+# 웹 서비스 설치 및 설정
+- name: Install and configure httpd
+  hosts: all        # 모든 호스트에 적용
+  remote_user: devops
+  become: true
+
+  tasks:
+    - name: Install httpd   
+      yum:    
+        name: httpd
+        state: latest
+
+    - name: Start and enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: Install firewalld
+      yum:
+        name: firewalld
+        state: latest
+    
+    - name: Start and enable firewalld
+      service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Enable firewall
+      firewalld:
+        zone: public
+        service: http
+        permanent: true
+        immediate: true
+        state: enabled
+
+    - name: template server configs
+      template:
+        src: "templates/{{ inventory_hostname }}-httpd.conf.j2"
+        dest: /etc/httpd/conf.d/myconfig.conf
+        owner: root
+        group: root
+        mode: 0644
+      notify: 
+        - restart httpd
+
+  handlers:
+    - name: restart httpd
+      service: 
+        name: httpd
+        state: restarted
+
+# 웹 서비스 배포 및 프록시 서버 비활성화 플레이
+- name: Deploy web service and disable proxy server
+  hosts: webservers   # webservers 그룹에만 적용
+  remote_user: devops
+  become: true
+
+  tasks:
+    - name: Stop Apache proxy server
+      service:
+        name: httpd
+        state: stopped
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['proxyservers'] }}"
+      # 인벤토리에 정의된 proxyservers group에만 작업을 위임
+
+    - name: Deploy webpages
+      template:
+        src: templates/index.html.j2
+        dest: /var/www/html/index.html
+        owner: apache
+        group: apache
+        mode: 0644
+
+    - name: Start Apache proxy server
+      service:
+        name: httpd
+        state: started
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['proxyservers'] }}"
+      # 인벤토리에 정의된 proxyservers 그룹에만 작업을 위임

@@ -1,0 +1,39 @@
+# async.yml
+- name: longfiles async playbook
+  hosts: webservers
+  remote_user: devops
+  become: true
+
+  tasks:
+    # longfiles.j2 스릡트 배포
+    - name: template longfiles script
+      template:
+        src: templates/longfiles.j2
+        dest: /usr/local/bin/longfiles
+        owner: root
+        group: root
+        mode: 0755
+
+    # 긴 스크립트 비동기 실행
+    - name: run longfiles script
+      command: "/usr/local/bin/longfiles {{ item }} /tmp/{{item}}}.file"
+      async: 110        # 110초 동안 대기
+      poll: 0           # non-blocking  (현재 태스크는 background에서)
+      with_items:
+        - foo
+        - bar
+        - baz
+      register: script_sleeper  # 완료 상태 조회
+
+    # 값 확인
+    - name: show script_sleeper value
+      debug:
+        var: script_sleeper
+
+    # 비동기 작업의 상태 확인
+    - name: check status of longfiles script
+      async_status: "jid={{ item.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished   # 성공할 때 까지
+      retries: 30                   # 최대 시도 횟수
+      with_items: "{{ script_sleeper.results }}"
