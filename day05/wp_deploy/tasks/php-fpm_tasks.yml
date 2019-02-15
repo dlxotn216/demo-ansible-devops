@@ -1,0 +1,25 @@
+---
+- name: centos-repository
+
+- name: install epel repository
+  
+- name: Remi 리포지터리 설치
+
+- name: php-fpm과 관련 모듈 설치
+  yum:
+    name: "{{ item }}"
+    enablerepo: "remi-php{{ php_fpm_php_version|replace('.', '') }}"
+  with_items:
+    - libcrypto.so.10
+    - php-fpm
+    - php-devel
+    - php-enchant
+    - php-mbstring
+    - php-process
+    - php-xml
+    - php-gd
+    - "{{ php_fpm_additional_packages }}"
+  notify:
+    - PHP-FPM 재시작
+
+- name: PHP-FPM 재시작

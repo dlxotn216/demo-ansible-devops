@@ -1,0 +1,58 @@
+---
+- name: Check ftp server installed and enabled
+  hosts: ftpservers
+  become: true
+  vars_files: 
+    - vars/defaults-template.yml
+    - vars/vars.yml
+
+  tasks:
+    - name: Check vsftpd package installd
+      yum:
+        name: "{{ vsftpd_packages }}"
+        state: latest
+
+    - name: Start vsftpd service and enabled
+      service: 
+        name: "{{ vsftpd_service }}"
+        state: started
+        enabled: true
+
+    - name: Deploy conf.d file
+      template:
+        src: templates/vsftpd.conf.j2
+        dest: "{{ vsftpd_config_file }}"
+        owner: root
+        group: root
+        mode: 0600
+        setype: 'etc_t'
+      notify:
+        - restart vsftpd
+
+    - name: Check firewalld package installd
+      yum:
+        name: firewalld
+        state: latest
+
+    - name: Start firewalld service
+      service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Permit firewall to ftp
+      firewalld:
+        service: ftp
+        immediate: true
+        permanent: true
+        state: enabled
+
+  handlers:
+    - name: restart vsftpd
+      service:
+        name: "{{ item }}"
+        state: restarted
+        enabled: true
+      with_items: "{{ vsftpd_service }}"
+  
+    

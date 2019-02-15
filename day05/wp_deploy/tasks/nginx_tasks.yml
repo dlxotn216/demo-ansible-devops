@@ -1,0 +1,12 @@
+---
+- name: libselinux-python과 EPEL 리포지터리 설치
+
+- name: 엔진엑스 설치
+
+- name: 엔진엑스 시작과 자동 시작 설정
+
+- name: nginx.conf 템플릿 활용
+
+- name: 엔진엑스용 그룹 작성
+
+- name: 엔진엑스용 사용자 작성

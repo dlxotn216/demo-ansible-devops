@@ -1,0 +1,47 @@
+---
+#- name: 워드프레스 그룹 작성
+
+#- name: 워드프레스 사용자 작성
+
+#- name: 워드프레스 소스 해제
+
+- block:
+    - name: 인증용 고유키 파일을 읽는다
+      command: "cat {{ wordpress_home }}/unique_keys"
+      changed_when: false
+      run_once: true
+      delegate_to: "{{ ansible_play_hosts[0] }}"
+      register: cat_unique_keys
+  rescue:
+    - name: 인증용 고유키 취득
+      uri:
+        url: https://api.wordpress.org/secret-key/1.1/salt/
+        return_content: true
+      run_once: true
+      register: get_unique_keys
+  always:
+    - name: 인증용 고유키 정보를 변수에 설정
+      set_fact:
+        wordpress_unique_keys: "{{ (get_unique_keys.content if cat_unique_keys|failed else cat_unique_keys.stdout)|trim }}"
+
+    - name: 인증용 고유키를 파일에 저장
+      copy:
+        backup: true
+        content: "{{ wordpress_unique_keys }}"
+        dest: "{{ wordpress_home }}/unique_keys"
+
+#    - name: 워드프레스 설정 파일 배치
+
+#    - name: PHP-FPM용 설정 파일 배치
+
+    - name: PHP-FPM 설정 파일 테스트
+      command: php-fpm -t
+      changed_when: false
+
+#    - name: 엔진엑스 설정 파일 배치
+
+    - name: 엔진엑스 설정 파일 테스트
+      command: nginx -t
+      changed_when: false
+
+#    - name: Firewalld에서 워드프레스 시작 포트를 공개 상태로 설정

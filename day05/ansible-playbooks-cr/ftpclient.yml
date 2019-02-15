@@ -1,0 +1,9 @@
+---
+- name: Check ftp client installed
+  hosts: ftpclients
+  become: true
+  tasks:
+    - name: Check lfpt package installed
+      yum:
+        name: lftp
+        state: latest

@@ -1,0 +1,43 @@
+---
+# tasks file for ansible-vsftpd
+
+- name: Check vsftpd package installed
+  yum:
+    name: "{{ vsftpd_packages }}"
+    state: latest
+
+- name: Start vsftpd service and enabled
+  service:
+    name: "{{ vsftpd_service }}"
+    state: started
+    enabled: true
+
+- name: Deploy conf.d file
+  template:
+    src: templates/vsftpd.conf.j2
+    dest: "{{ vsftpd_config_file }}"
+    owner: root
+    group: root
+    mode: 0600
+    setype: 'etc_t'
+  notify:
+    - restart vsftpd
+
+- name: Check firewalld package installed
+  yum:
+    name: firewalld
+    state: latest
+
+- name: Start firewalld service
+  service:
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: Permit firewall to ftp
+  firewalld:
+    service: ftp
+    immediate: true
+    permanent: true
+    state: enabled
+
